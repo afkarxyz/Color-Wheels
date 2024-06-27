@@ -2,6 +2,8 @@ import customtkinter as ctk
 from PIL import Image
 import pyperclip
 import os
+import threading
+import time
 
 class ColorWheelsApp(ctk.CTk):
     def __init__(self):
@@ -36,6 +38,8 @@ class ColorWheelsApp(ctk.CTk):
         title_label = ctk.CTkLabel(color_frame, text="Basic Color Wheels", font=("Helvetica", 16, "bold"))
         title_label.grid(row=0, column=0, columnspan=4, pady=(10, 10))
 
+        self.copy_buttons = {}  # Store copy buttons for later access
+
         for i, (color_code, color_name) in enumerate(colors, start=1):
             # Color sample button
             color_button = ctk.CTkButton(color_frame, text="", width=25, height=25, fg_color=color_code, hover_color=color_code)
@@ -54,12 +58,22 @@ class ColorWheelsApp(ctk.CTk):
             code_textbox.grid(row=i, column=2, padx=5, pady=5)
 
             # Copy button
-            copy_button = ctk.CTkButton(color_frame, text="Copy", width=50, height=25, command=lambda c=color_code: self.copy_color(c))
+            copy_button = ctk.CTkButton(color_frame, text="Copy", width=50, height=25, command=lambda c=color_code, b=i: self.copy_color(c, b))
             copy_button.grid(row=i, column=3, padx=(5, 10), pady=5)
+            self.copy_buttons[i] = copy_button
 
-    def copy_color(self, color_code):
+    def copy_color(self, color_code, button_index):
         pyperclip.copy(color_code)
         print(f"Copied color code: {color_code}")
+        
+        # Change button text to "Copied"
+        self.copy_buttons[button_index].configure(text="Copied")
+        
+        # Start a timer to reset the button text after 2 seconds
+        threading.Timer(2.0, self.reset_button_text, args=[button_index]).start()
+
+    def reset_button_text(self, button_index):
+        self.copy_buttons[button_index].configure(text="Copy")
 
 if __name__ == "__main__":
     app = ColorWheelsApp()
