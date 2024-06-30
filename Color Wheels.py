@@ -12,6 +12,10 @@ class ColorWheelsApp(ctk.CTk):
         self.title("Color Wheels")
         self.geometry("935x590")
 
+        # Set custom icon
+        icon_path = os.path.join(os.path.dirname(__file__), "rgb.ico")
+        self.iconbitmap(icon_path)
+
         # Attempt to load the Color Wheel image
         image_path = os.path.join(os.path.dirname(__file__), "Color_Wheels.png")
         try:
@@ -25,10 +29,10 @@ class ColorWheelsApp(ctk.CTk):
 
         # Color information
         colors = [
-            ("#FF0000", "Red"), ("#FF7F00", "Orange"), ("#FFFF00", "Yellow"),
-            ("#7FFF00", "Chartreuse"), ("#00FF00", "Green"), ("#00FF7F", "Spring Green"),
-            ("#00FFFF", "Cyan"), ("#007FFF", "Azure"), ("#0000FF", "Blue"),
-            ("#7F00FF", "Violet"), ("#FF00FF", "Magenta"), ("#FF007F", "Rose")
+            ("FF0000", "Red"), ("FF7F00", "Orange"), ("FFFF00", "Yellow"),
+            ("7FFF00", "Chartreuse"), ("00FF00", "Green"), ("00FF7F", "Spring Green"),
+            ("00FFFF", "Cyan"), ("007FFF", "Azure"), ("0000FF", "Blue"),
+            ("7F00FF", "Violet"), ("FF00FF", "Magenta"), ("FF007F", "Rose")
         ]
 
         color_frame = ctk.CTkFrame(self)
@@ -42,7 +46,7 @@ class ColorWheelsApp(ctk.CTk):
 
         for i, (color_code, color_name) in enumerate(colors, start=1):
             # Color sample button
-            color_button = ctk.CTkButton(color_frame, text="", width=25, height=25, fg_color=color_code, hover_color=color_code)
+            color_button = ctk.CTkButton(color_frame, text="", width=25, height=25, fg_color=f"#{color_code}", hover_color=f"#{color_code}")
             color_button.grid(row=i, column=0, padx=(10, 5), pady=5)
 
             # Color name textbox
